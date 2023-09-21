@@ -5,6 +5,7 @@ FILE  *ListaDeAlunos;
 FILE *ListaAuxiliar;
 FILE *ListaOrdenadaAlunos;
 char fieldContent[40];
+char auxFieldContent[40];
 
 void startFile(){
     //reseta o arquivo que ira receber a lista de alunos ordenada
@@ -33,7 +34,30 @@ void selectField(int field, char *data){
     }
 
     strcpy(fieldContent,token); //saves token info on selectedField variable
-    printf( " %s\n", fieldContent ); //selectedField
+}
+void selectAuxField(int field, char *data){
+    //coloca o valor lido depois da N virgula em fieldContent
+    //para acessar semestre field devera receber 0
+    // para acessar turma field devera receber 1
+    //para acessar periodo field devera receber 2
+    // para acessar nome field devera receber 3
+    // para acessar materia field devera receber 4
+    // para acessar media field devera receber 5
+    char auxData[90];
+
+    strcpy(auxData, data);
+
+    int i = 0;
+
+    char * token = strtok(auxData, ",");
+
+    while( i!=field ) {
+        token = strtok(NULL, ",");
+        i++;
+    }
+
+    strcpy(auxFieldContent,token); //saves token info on selectedField variable
+
 
 }
 
@@ -70,15 +94,22 @@ void copyFile(){
             fprintf(ListaAuxiliar,"%s\n", linha);
         }
         fclose(ListaDeAlunos);
-
-
 }
-
+int compareField(char *data1, char *data2,int field){
+    selectAuxField(field,data2);
+    selectField(field,data1);
+    int result = strcmp(fieldContent,auxFieldContent);
+   return result;
+}
 
 int main() {
 startFile();
 copyFile();
     selectField(5,"2,A,N,maria_rodrigues,portugues,7.3");
-    printf("%s",fieldContent);
+    selectAuxField(5,"2,A,N,maria_rodrigues,portugues,7.3");
+
+    printf("%s\n",fieldContent);
+    printf("%s\n",auxFieldContent);
+    printf("%d", compareField("2,A,N,maria_rodrigues,portugues,7.3", "2,A,N,maria_rodrigues,portugues,7.3", 0));
     printf("%d",searchDataInFile("2,A,N,maria_rodrigues,portugues,7.3"));
 }
