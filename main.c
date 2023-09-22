@@ -59,6 +59,7 @@ void selectAuxField(int field, char *data){
     strcpy(auxFieldContent,token); //saves token info on selectedField variable
 
 
+
 }
 
 
@@ -102,6 +103,18 @@ int compareField(char *data1, char *data2,int field){
    return result;
 }
 
+int checkFileSize() {
+    //retorna o numero de registros no arquivo listaDeAlunos.txt
+    char linha[90];
+    int index=0;
+    ListaDeAlunos = fopen("listaDeAlunos.txt", "r");
+    while (fscanf(ListaDeAlunos, "%s", linha) != EOF) {
+        index++;
+    }
+    fclose(ListaDeAlunos);
+    return index;
+}
+
 int main() {
 startFile();
 copyFile();
@@ -112,4 +125,6 @@ copyFile();
     printf("%s\n",auxFieldContent);
     printf("%d", compareField("2,A,N,maria_rodrigues,portugues,7.3", "2,A,N,maria_rodrigues,portugues,7.3", 0));
     printf("%d",searchDataInFile("2,A,N,maria_rodrigues,portugues,7.3"));
+    printf("\n%d",checkFileSize());
+
 }
